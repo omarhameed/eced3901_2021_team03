@@ -130,10 +130,10 @@ class SquareMoveVel(SquareMove):
         self.turn(3.5, 0.5)
         self.go_forward(2, 0.5)
         self.turn(3.5, 0.5)
-        self.go_forward(2, 0.5)
         self.turn(3.5, 0.5)
         self.go_forward(2, 0.5)
-        self.stop_robot()
+        
+self.stop_robot()
 
 
 class SquareMoveOdom(SquareMove):
@@ -158,7 +158,7 @@ class SquareMoveOdom(SquareMove):
         (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
         print roll, pitch, yaw
         return yaw
-        
+       
     def move_of(self, d, speed=0.5):
 
         x_init = self.odom_pose.position.x
@@ -241,8 +241,4 @@ if __name__ == '__main__':
     # Listen and Publish to ROS + execute moving instruction
     r.start_ros()
     r.move()
-
-
-
-
 
