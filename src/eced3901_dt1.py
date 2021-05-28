@@ -165,6 +165,8 @@ class SquareMoveOdom(SquareMove):
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
 
+        print ("X_Init, Y_Init: %.2f %.2f", x_init,y_init)
+
         # Set the velocity forward until distance is reached
         while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
              (self.odom_pose.position.y - y_init)**2) < d and not ros.is_shutdown():
@@ -187,11 +189,11 @@ class SquareMoveOdom(SquareMove):
         elif (pose > (math.pi)/2):
             return pose
         elif (pose < 0):
-            pose = pose + 2*(math.pi) 
-            return pose
+            positivePose = pose + 2*(math.pi) 
+            return positivePose
         elif (pose > 2*(math.pi)):
-            pose = pose - (2*(math.pi))
-            return pose
+            restrictedPose = pose - (2*(math.pi))
+            return restrictedPose
     
     def turn_of(self, a, ang_speed=1.0):
 
@@ -228,9 +230,9 @@ class SquareMoveOdom(SquareMove):
         self.move_of(0.5)
         self.turn_of(math.pi/2)
         self.move_of(0.5)
-        self.turn_of(math.pi/4)
+        self.turn_of(3*(math.pi)/4)
         self.move_of(math.sqrt(2)/2)
-        self.turn_of(math.pi/4)
+        self.turn_of(3*(math.pi)/4)
         self.move_of(0.5)
         self.stop_robot()
 
