@@ -126,13 +126,13 @@ class SquareMoveVel(SquareMove):
 
     def move(self):
 
-        self.go_forward(2, 0.5)
-        self.turn(3.5, 0.5)
-        self.go_forward(2, 0.5)
-        self.turn(3.5, 0.5)
-        self.go_forward(2, 0.5)
-        self.turn(3.5, 0.5)
-        self.go_forward(2, 0.5)
+        self.go_forward(0.5/0.15, 0.15)
+        # self.turn(3.5, 0.5)
+        # self.go_forward(2, 0.5)
+        # self.turn(3.5, 0.5)
+        # self.go_forward(2, 0.5)
+        # self.turn(3.5, 0.5)
+        # self.go_forward(2, 0.5)
         self.stop_robot()
 
 
@@ -159,7 +159,7 @@ class SquareMoveOdom(SquareMove):
         print roll, pitch, yaw
         return yaw
         
-    def move_of(self, d, speed=0.5):
+    def move_of(self, d, speed=0.15):
 
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
@@ -209,13 +209,13 @@ class SquareMoveOdom(SquareMove):
             time.sleep(0.1)
 
         # Implement main instructions
+        self.move_of(0.5)
+        # self.turn_of(math.pi/4)
         # self.move_of(0.5)
-        self.turn_of(math.pi/4)
-        self.move_of(0.5)
-        self.turn_of(math.pi/4)
-        self.move_of(0.5)
-        self.turn_of(math.pi/4)
-        self.move_of(0.5)
+        # self.turn_of(math.pi/4)
+        # self.move_of(0.5)
+        # self.turn_of(math.pi/4)
+        # self.move_of(0.5)
         self.stop_robot()
 
 
