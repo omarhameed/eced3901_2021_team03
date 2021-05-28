@@ -160,7 +160,7 @@ class SquareMoveOdom(SquareMove):
         print (roll, pitch, yaw)
         return yaw
         
-    def move_of(self, d, speed=0.15):
+    def move_of(self, d, speed=0.1):
 
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
@@ -199,7 +199,7 @@ class SquareMoveOdom(SquareMove):
         else:
             return pose
     
-    def turn_of(self, a, ang_speed=1.0):
+    def turn_of(self, a, ang_speed=0.2):
 
         # Convert the orientation quaternion message to Euler angles
         a_init = self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation))
