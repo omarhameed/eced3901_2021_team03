@@ -1,3 +1,18 @@
+"""
+Date: May 28, 2021
+Authors: Usman Kamran, Ryan Brownlee, Omar Abdel Hameed
+Course: ECED 3901
+Professor: Dr Vincent Sieben
+Purpose:
+This program enables a counterclockwise right angle triangle trajectory followed by a clockwise right angle triangle trajectory.
+It is the first Design Task for ECED 3901.
+
+Credits:
+This program was repurposed from the original program created by Gabriel Urbain (gabriel.urbain@uguent.be).
+The original source code can be found here: https://gist.github.com/gurbain/c833e9858dd3e5fc4e30d6b1a305667b
+
+"""
+
 import math
 import rospy as ros
 import sys
@@ -8,18 +23,19 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
 
-__author__ = "Gabriel Urbain" 
-__copyright__ = "Copyright 2018, IDLab, UGent"
+
+__author__ = "Team 03" 
+__copyright__ = "Copyright 2021, ECED  3901, Dalhousie University"
 
 __license__ = "MIT" 
 __version__ = "1.0" 
-__maintainer__ = "Gabriel Urbain"
-__email__ = "gabriel.urbain@ugent.be" 
+__maintainer__ = "Team 03"
+__email__ = "us311212@dal.ca" 
 __status__ = "Education" 
-__date__ = "October 15th, 2018"
+__date__ = "May 28th, 2021"
 
 
-class SquareMove(object):
+class TriangleMove(object):
     """
     This class is an abstract class to control a square trajectory on the turtleBot.
     It mainly declare and subscribe to ROS topics in an elegant way.
@@ -28,7 +44,7 @@ class SquareMove(object):
     def __init__(self):
 
         # Declare ROS subscribers and publishers
-        self.node_name = "square_move"
+        self.node_name = "triangle_move"
         self.odom_sub_name = "/odom"
         self.vel_pub_name = "/cmd_vel"
         self.vel_pub = None
@@ -84,7 +100,7 @@ class SquareMove(object):
 
 
 
-class SquareMoveVel(SquareMove):
+class TriangleMoveVel(TriangleMove):
     """
     This class implements a open-loop square trajectory based on velocity control. HOWTO:
      - Start the sensors on the turtlebot:
@@ -95,7 +111,7 @@ class SquareMoveVel(SquareMove):
 
     def __init__(self):
         
-        super(SquareMoveVel, self).__init__()
+        super(TriangleMoveVel, self).__init__()
 
     def go_forward(self, duration, speed):
 
@@ -137,7 +153,7 @@ class SquareMoveVel(SquareMove):
         self.stop_robot()
 
 
-class SquareMoveOdom(SquareMove):
+class TriangleMoveOdom(TriangleMove):
     """
     This class implements a semi closed-loop square trajectory based on relative position control,
     where only odometry is used. HOWTO:
@@ -150,7 +166,7 @@ class SquareMoveOdom(SquareMove):
     def __init__(self):
 
 
-        super(SquareMoveOdom, self).__init__()
+        super(TriangleMoveOdom, self).__init__()
 
         self.pub_rate = 0.1
 
@@ -183,7 +199,8 @@ class SquareMoveOdom(SquareMove):
 
         sys.stdout.write("\n")
 
-    def convertPoseEstimate(self, pose):
+    # Convert any negative angles into their positive rad equivalents
+    def convert_pose_estimate(self, pose):
         if (pose < (math.pi)/2 and pose > 0):
             return pose
         elif (pose > (math.pi)/2):
@@ -192,27 +209,19 @@ class SquareMoveOdom(SquareMove):
             positivePose = pose + 2*(math.pi) 
             return positivePose
         
-    def handleGreaterThan2Pi(self, pose):
-        if (pose > 2*(math.pi)):
-            restrictedPose = pose - (2*(math.pi))
-            return restrictedPose
-        else:
-            return pose
     
     def turn_of(self, a, ang_speed=0.2):
 
         # Convert the orientation quaternion message to Euler angles
-        a_init = self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation))
-        # a_init = 0
+        a_init = self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation))
         print (a_init)
         print("This is our check for initial orientation: {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation)))
-        # poseEstimate = self.get_z_rotation(self.odom_pose.orientation
-        # Set the angular velocity forward until angle is reached
-        while (abs(self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown():
         
-        # while (poseEstimate) - a_init) < a and not ros.is_shutdown():
+        # Set the angular velocity forward until angle is reached
+        while (abs(self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown():
             sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
                 a_init) + "rad over {:.2f}".format(a) + "rad")
+            
             sys.stdout.flush()
             print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
 
@@ -231,6 +240,7 @@ class SquareMoveOdom(SquareMove):
             time.sleep(0.1)
 
         # Implement main instructions
+        # Counterclockwise right triangle movement implementation.
         self.move_of(0.5)
         self.turn_of(3*(math.pi)/4)
         self.move_of(math.sqrt(2)/2)
@@ -238,7 +248,7 @@ class SquareMoveOdom(SquareMove):
         self.move_of(0.5)
         self.turn_of(math.pi)
         self.turn_of((math.pi)/2)
-        # clockwise
+        # Clockwise right triangle movement implementation.
         # self.turn_of(math.pi/2)
         self.move_of(0.5)
         self.turn_of(math.pi)
@@ -259,10 +269,10 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
 
         if sys.argv[1] == "vel":
-            r = SquareMoveVel()
+            r = TriangleMoveVel()
 
         elif sys.argv[1] == "odom":
-            r = SquareMoveOdom()
+            r = TriangleMoveOdom()
 
         else:
             sys.exit(-1)
