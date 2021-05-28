@@ -191,9 +191,13 @@ class SquareMoveOdom(SquareMove):
         elif (pose < 0):
             positivePose = pose + 2*(math.pi) 
             return positivePose
-        elif (pose > 2*(math.pi)):
+        
+    def handleGreaterThan2Pi(self, pose):
+        if (pose > 2*(math.pi)):
             restrictedPose = pose - (2*(math.pi))
             return restrictedPose
+        else:
+            return pose
     
     def turn_of(self, a, ang_speed=1.0):
 
@@ -232,14 +236,16 @@ class SquareMoveOdom(SquareMove):
         self.move_of(math.sqrt(2)/2)
         self.turn_of(3*(math.pi)/4)
         self.move_of(0.5)
-        # self.turn_of(math.pi/2)
         self.turn_of(math.pi)
+        self.turn_of((math.pi)/2)
         # clockwise
         # self.turn_of(math.pi/2)
         self.move_of(0.5)
-        self.turn_of(5*(math.pi)/4)
+        self.turn_of(math.pi)
+        self.turn_of((math.pi)/4)
         self.move_of(math.sqrt(2)/2)
-        self.turn_of(5*(math.pi)/4)
+        self.turn_of(math.pi)
+        self.turn_of(math.pi)
         self.move_of(0.5)
         self.turn_of(math.pi)
         self.stop_robot()
