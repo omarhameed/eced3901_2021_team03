@@ -228,11 +228,18 @@ class SquareMoveOdom(SquareMove):
 
         # Implement main instructions
         self.move_of(0.5)
-        self.turn_of(math.pi/2)
-        self.move_of(0.5)
         self.turn_of(3*(math.pi)/4)
         self.move_of(math.sqrt(2)/2)
         self.turn_of(3*(math.pi)/4)
+        self.move_of(0.5)
+        self.turn_of(math.pi/2)
+        # clockwise
+        self.turn_of(math.pi/2)
+        self.turn_of(5*(math.pi)/4)
+        self.move_of(math.sqrt(2)/2)
+        self.turn_of(5*(math.pi)/4)
+        self.move_of(0.5)
+        self.turn_of(math.pi)
         self.stop_robot()
 
 
