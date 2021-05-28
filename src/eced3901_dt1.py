@@ -156,7 +156,7 @@ class SquareMoveOdom(SquareMove):
     def get_z_rotation(self, orientation):
 
         (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
-        print roll, pitch, yaw
+        print (roll, pitch, yaw)
         return yaw
         
     def move_of(self, d, speed=0.15):
@@ -184,8 +184,9 @@ class SquareMoveOdom(SquareMove):
 
         # Convert the orientation quaternion message to Euler angles
         a_init = self.get_z_rotation(self.odom_pose.orientation)
+        # a_init = 0
         print (a_init)
-
+        print("This is our check for initial orientation: {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation)))
         # Set the angular velocity forward until angle is reached
         while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not ros.is_shutdown():
 
@@ -211,11 +212,11 @@ class SquareMoveOdom(SquareMove):
         # Implement main instructions
         self.move_of(0.5)
         self.turn_of(math.pi/2)
-        # self.move_of(0.5)
-        # self.turn_of(math.pi/4)
-        # self.move_of(0.5)
-        # self.turn_of(math.pi/4)
-        # self.move_of(0.5)
+        self.move_of(0.5)
+        self.turn_of(math.pi/4)
+        self.move_of(math.sqrt(2)/2)
+        self.turn_of(math.pi/4)
+        self.move_of(0.5)
         self.stop_robot()
 
 
