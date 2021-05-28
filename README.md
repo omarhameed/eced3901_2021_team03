@@ -1,4 +1,4 @@
-#ECED 3901 Robotics Project 
+# ECED 3901 Robotics Project 
 **Authors:** Usman Kamran, Ryan Brownlee, Omar Abdel Hameed  
 **Team #:** 03  
 **Course:** ECED 3901  
