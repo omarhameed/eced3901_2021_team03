@@ -80,6 +80,7 @@ class SquareMove(object):
 
         self.vel_pub.publish(msg)
 
+   
 
 
 
@@ -180,16 +181,30 @@ class SquareMoveOdom(SquareMove):
 
         sys.stdout.write("\n")
 
+    def convertPoseEstimate(self, pose):
+        if (pose < (math.pi)/2 and pose > 0):
+            return pose
+        elif (pose > (math.pi)/2):
+            return pose
+        elif (pose < 0):
+            pose = pose + 2*(math.pi) 
+            return pose
+        elif (pose > 2*(math.pi)):
+            pose = pose - (2*(math.pi))
+            return pose
+    
     def turn_of(self, a, ang_speed=1.0):
 
         # Convert the orientation quaternion message to Euler angles
-        a_init = self.get_z_rotation(self.odom_pose.orientation)
+        a_init = self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation))
         # a_init = 0
         print (a_init)
         print("This is our check for initial orientation: {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation)))
+        # poseEstimate = self.get_z_rotation(self.odom_pose.orientation
         # Set the angular velocity forward until angle is reached
-        while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not ros.is_shutdown():
-
+        while (self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init) < a and not ros.is_shutdown():
+        
+        # while (poseEstimate) - a_init) < a and not ros.is_shutdown():
             sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
                 a_init) + "rad over {:.2f}".format(a) + "rad")
             sys.stdout.flush()
