@@ -180,19 +180,19 @@ class SquareMoveOdom(SquareMove):
 
         sys.stdout.write("\n")
 
-    def turn_of(self, a, ang_speed=0.4):
+    def turn_of(self, a, ang_speed=1.0):
 
         # Convert the orientation quaternion message to Euler angles
         a_init = self.get_z_rotation(self.odom_pose.orientation)
-        print a_init
+        print (a_init)
 
         # Set the angular velocity forward until angle is reached
         while (self.get_z_rotation(self.odom_pose.orientation) - a_init) < a and not ros.is_shutdown():
 
-            # sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
-            #     a_init) + "rad over {:.2f}".format(a) + "rad")
-            # sys.stdout.flush()
-            # print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
+            sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
+                a_init) + "rad over {:.2f}".format(a) + "rad")
+            sys.stdout.flush()
+            print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
 
             msg = Twist()
             msg.angular.z = ang_speed
@@ -210,7 +210,7 @@ class SquareMoveOdom(SquareMove):
 
         # Implement main instructions
         self.move_of(0.5)
-        # self.turn_of(math.pi/4)
+        self.turn_of(math.pi/2)
         # self.move_of(0.5)
         # self.turn_of(math.pi/4)
         # self.move_of(0.5)
