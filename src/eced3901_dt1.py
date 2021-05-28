@@ -204,7 +204,7 @@ class SquareMoveOdom(SquareMove):
         print("This is our check for initial orientation: {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation)))
         # poseEstimate = self.get_z_rotation(self.odom_pose.orientation
         # Set the angular velocity forward until angle is reached
-        while (self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init) < a and not ros.is_shutdown():
+        while (abs(self.convertPoseEstimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown():
         
         # while (poseEstimate) - a_init) < a and not ros.is_shutdown():
             sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
