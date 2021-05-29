@@ -44,15 +44,15 @@ class TriangleMove(object):
     def __init__(self):
 
         # Declare ROS subscribers and publishers
-        self.node_name = "triangle_move"
-        self.odom_sub_name = "/odom"
-        self.vel_pub_name = "/cmd_vel"
-        self.vel_pub = None
-        self.odometry_sub = None
+        self.node_name = "triangle_move" #names node
+        self.odom_sub_name = "/odom" #names odom sub command
+        self.vel_pub_name = "/cmd_vel" #names velocity sub command
+        self.vel_pub = None 
+        self.odometry_sub = None  
 
         # ROS params
-        self.pub_rate = 0.1
-        self.queue_size = 2
+        self.pub_rate = 0.1 #sets the rate the ROS publishes
+        self.queue_size = 2 #sets the ROS que size
 
         # Variables containing the sensor information that can be used in the main program
         self.odom_pose = None
@@ -85,14 +85,14 @@ class TriangleMove(object):
     def move(self):
         """ To be surcharged in the inheriting class"""
 
-        while not ros.is_shutdown():
-            time.sleep(1)
+        while not ros.is_shutdown(): 
+            time.sleep(1)  # gives the program time to accept data
 
-    def __odom_ros_sub(self, msg):
+    def __odom_ros_sub(self, msg): #subscribes to itself to find its pose from odom
 
         self.odom_pose = msg.pose.pose
 
-    def vel_ros_pub(self, msg):
+    def vel_ros_pub(self, msg): # publishes velocity
 
         self.vel_pub.publish(msg)
 
@@ -102,7 +102,7 @@ class TriangleMove(object):
 
 class TriangleMoveVel(TriangleMove):
     """
-    This class implements a open-loop square trajectory based on velocity control. HOWTO:
+    This class implements a open-loop square triangular trajectory based on velocity control. HOWTO:
      - Start the sensors on the turtlebot:
             $ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch 
      - Start this node on your computer:
@@ -141,21 +141,9 @@ class TriangleMoveVel(TriangleMove):
             self.vel_ros_pub(msg)
             time.sleep(self.pub_rate)
 
-    def move(self):
-
-        self.go_forward(0.5/0.15, 0.15)
-        # self.turn(3.5, 0.5)
-        # self.go_forward(2, 0.5)
-        # self.turn(3.5, 0.5)
-        # self.go_forward(2, 0.5)
-        # self.turn(3.5, 0.5)
-        # self.go_forward(2, 0.5)
-        self.stop_robot()
-
-
 class TriangleMoveOdom(TriangleMove):
     """
-    This class implements a semi closed-loop square trajectory based on relative position control,
+    This class implements a semi closed-loop square triangular trajectory based on relative position control,
     where only odometry is used. HOWTO:
      - Start the sensors on the turtlebot:
             $ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch 
@@ -170,23 +158,24 @@ class TriangleMoveOdom(TriangleMove):
 
         self.pub_rate = 0.1
 
-    def get_z_rotation(self, orientation):
+    def get_z_rotation(self, orientation): #converts input quaternion coordinates into eulerian roll pitch and yaw
 
         (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
         print (roll, pitch, yaw)
         return yaw
         
-    def move_of(self, d, speed=0.1):
+    def move_of(self, d, speed=0.1): #moves the vehicle d distance at speed=0.1, speed is low to maximize accuracy
 
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
 
-        print ("X_Init, Y_Init: %.2f %.2f", x_init,y_init)
+        print ("X_Init, Y_Init:", x_init,y_init) #prints x_init and y_init, which is the x and y position
 
         # Set the velocity forward until distance is reached
         while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
              (self.odom_pose.position.y - y_init)**2) < d and not ros.is_shutdown():
 
+	#prints out the distance the robot has moved out of the total distance requested
             sys.stdout.write("\r [MOVE] The robot has moved of {:.2f}".format(math.sqrt((self.odom_pose.position.x - x_init)**2 + \
             (self.odom_pose.position.y - y_init)**2)) +  "m over " + str(d) + "m")
             sys.stdout.flush()
