@@ -37,22 +37,22 @@ __date__ = "May 28th, 2021"
 
 class TriangleMove(object):
     """
-    This class is an abstract class to control a square trajectory on the turtleBot.
+    This class is an abstract class to control a square triangular trajectory on the turtleBot.
     It mainly declare and subscribe to ROS topics in an elegant way.
     """
 
     def __init__(self):
 
         # Declare ROS subscribers and publishers
-        self.node_name = "triangle_move"
-        self.odom_sub_name = "/odom"
-        self.vel_pub_name = "/cmd_vel"
-        self.vel_pub = None
-        self.odometry_sub = None
+        self.node_name = "triangle_move" #names node
+        self.odom_sub_name = "/odom" #names odom sub command
+        self.vel_pub_name = "/cmd_vel" #names velocity sub command
+        self.vel_pub = None 
+        self.odometry_sub = None  
 
         # ROS params
-        self.pub_rate = 0.1
-        self.queue_size = 2
+      self.pub_rate = 0.1 #sets the rate the ROS publishes
+        self.queue_size = 2 #sets the ROS que size
 
         # Variables containing the sensor information that can be used in the main program
         self.odom_pose = None
@@ -86,20 +86,20 @@ class TriangleMove(object):
         """ To be surcharged in the inheriting class"""
 
         while not ros.is_shutdown():
-            time.sleep(1)
+            time.sleep(1) # gives the program time to accept data
 
     def __odom_ros_sub(self, msg):
 
         self.odom_pose = msg.pose.pose
 
-    def vel_ros_pub(self, msg):
+    def vel_ros_pub(self, msg): # publishes velocity
 
         self.vel_pub.publish(msg)
 
    
 class TriangleMoveOdom(TriangleMove):
     """
-    This class implements a semi closed-loop square trajectory based on relative position control,
+    This class implements a semi closed-loop square triangular trajectory based on relative position control,
     where only odometry is used. HOWTO:
      - Start the sensors on the turtlebot:
             $ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch 
@@ -114,7 +114,7 @@ class TriangleMoveOdom(TriangleMove):
 
         self.pub_rate = 0.1
 
-    def get_z_rotation(self, orientation):
+    def get_z_rotation(self, orientation): #converts input quaternion coordinates into eulerian roll pitch and yaw
 
         (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
         print (roll, pitch, yaw)
@@ -125,7 +125,7 @@ class TriangleMoveOdom(TriangleMove):
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
 
-        print ("X_Init, Y_Init: %.2f %.2f", x_init,y_init)
+        print ("X_Init, Y_Init: ", x_init,y_init) #prints x_init and y_init, which is the x and y position
 
         # Set the velocity forward until distance is reached
         while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
