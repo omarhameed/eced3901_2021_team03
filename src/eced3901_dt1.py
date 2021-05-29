@@ -44,15 +44,15 @@ class TriangleMove(object):
     def __init__(self):
 
         # Declare ROS subscribers and publishers
-        self.node_name = "triangle_move" #names node
-        self.odom_sub_name = "/odom" #names odom sub command
-        self.vel_pub_name = "/cmd_vel" #names velocity sub command
-        self.vel_pub = None 
-        self.odometry_sub = None  
+        self.node_name = "triangle_move"
+        self.odom_sub_name = "/odom"
+        self.vel_pub_name = "/cmd_vel"
+        self.vel_pub = None
+        self.odometry_sub = None
 
         # ROS params
-        self.pub_rate = 0.1 #sets the rate the ROS publishes
-        self.queue_size = 2 #sets the ROS que size
+        self.pub_rate = 0.1
+        self.queue_size = 2
 
         # Variables containing the sensor information that can be used in the main program
         self.odom_pose = None
@@ -85,65 +85,21 @@ class TriangleMove(object):
     def move(self):
         """ To be surcharged in the inheriting class"""
 
-        while not ros.is_shutdown(): 
-            time.sleep(1)  # gives the program time to accept data
+        while not ros.is_shutdown():
+            time.sleep(1)
 
-    def __odom_ros_sub(self, msg): #subscribes to itself to find its pose from odom
+    def __odom_ros_sub(self, msg):
 
         self.odom_pose = msg.pose.pose
 
-    def vel_ros_pub(self, msg): # publishes velocity
+    def vel_ros_pub(self, msg):
 
         self.vel_pub.publish(msg)
 
    
-
-
-
-class TriangleMoveVel(TriangleMove):
-    """
-    This class implements a open-loop square triangular trajectory based on velocity control. HOWTO:
-     - Start the sensors on the turtlebot:
-            $ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch 
-     - Start this node on your computer:
-            $ python eced3901_dt1.py vel
-    """
-
-    def __init__(self):
-        
-        super(TriangleMoveVel, self).__init__()
-
-    def go_forward(self, duration, speed):
-
-        # Get the initial time
-        self.t_init = time.time()
-
-        # Set the velocity forward and wait (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not ros.is_shutdown():
-
-            msg = Twist()
-            msg.linear.x = speed
-            msg.angular.z = 0
-            self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
-
-    def turn(self, duration, ang_speed):
-
-         # Get the initial time
-        self.t_init = time.time()
-
-        # Set the velocity forward and wait 2 sec (do it in a while loop to keep publishing the velocity)
-        while time.time() - self.t_init < duration and not ros.is_shutdown():
-
-            msg = Twist()
-            msg.linear.x = 0
-            msg.angular.z = ang_speed
-            self.vel_ros_pub(msg)
-            time.sleep(self.pub_rate)
-
 class TriangleMoveOdom(TriangleMove):
     """
-    This class implements a semi closed-loop square triangular trajectory based on relative position control,
+    This class implements a semi closed-loop square trajectory based on relative position control,
     where only odometry is used. HOWTO:
      - Start the sensors on the turtlebot:
             $ roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch 
@@ -158,24 +114,23 @@ class TriangleMoveOdom(TriangleMove):
 
         self.pub_rate = 0.1
 
-    def get_z_rotation(self, orientation): #converts input quaternion coordinates into eulerian roll pitch and yaw
+    def get_z_rotation(self, orientation):
 
         (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
         print (roll, pitch, yaw)
         return yaw
         
-    def move_of(self, d, speed=0.1): #moves the vehicle d distance at speed=0.1, speed is low to maximize accuracy
+    def move_of(self, d, speed=0.1):
 
         x_init = self.odom_pose.position.x
         y_init = self.odom_pose.position.y
 
-        print ("X_Init, Y_Init:", x_init,y_init) #prints x_init and y_init, which is the x and y position
+        print ("X_Init, Y_Init: %.2f %.2f", x_init,y_init)
 
         # Set the velocity forward until distance is reached
         while math.sqrt((self.odom_pose.position.x - x_init)**2 + \
              (self.odom_pose.position.y - y_init)**2) < d and not ros.is_shutdown():
 
-	#prints out the distance the robot has moved out of the total distance requested
             sys.stdout.write("\r [MOVE] The robot has moved of {:.2f}".format(math.sqrt((self.odom_pose.position.x - x_init)**2 + \
             (self.odom_pose.position.y - y_init)**2)) +  "m over " + str(d) + "m")
             sys.stdout.flush()
@@ -257,10 +212,7 @@ if __name__ == '__main__':
     # Choose the example you need to run in the command line
     if len(sys.argv) > 1:
 
-        if sys.argv[1] == "vel":
-            r = TriangleMoveVel()
-
-        elif sys.argv[1] == "odom":
+        if sys.argv[1] == "odom":
             r = TriangleMoveOdom()
 
         else:
