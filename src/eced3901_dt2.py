@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Date: May 28, 2021
 Authors: Usman Kamran, Ryan Brownlee, Omar Abdel Hameed
@@ -453,4 +452,3 @@ if __name__ == '__main__':
     # Listen and Publish to ROS + execute moving instruction
     r.start_ros()
     r.move()
->>>>>>> 6a97020720e277108a200a00fcec55343a06d6f5
