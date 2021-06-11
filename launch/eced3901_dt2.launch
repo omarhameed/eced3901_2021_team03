@@ -1,9 +1,6 @@
 <launch>
 
 	<!-- Arguments -->
-    <arg name="x_pos" default="0.3048"/>
-    <arg name="y_pos" default="0.3048"/>
-    <arg name="z_pos" default="0.0"/>
 
 	<arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
 
@@ -26,19 +23,6 @@
 
 	
     </include>  
-    <!-- Gazebo -->
-
-
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find eced3901_2021_team03)/worlds/eced3901_lab5.world"/>
-        <arg name="paused" value="false"/>
-        <arg name="use_sim_time" value="true"/>
-        <arg name="gui" value="true"/>
-        <arg name="headless" value="false"/>
-        <arg name="debug" value="false"/>
-    </include>  
-
-
 
 	<!-- SLAM: Gmapping, Cartographer, Hector, Karto, Frontier_exploration, RTAB-Map -->
 
@@ -60,10 +44,8 @@
 
 	</group>
 
- 
-    <param name="robot_description" command="$(find xacro)/xacro.py $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3_burger -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
-	<node name="eced3901_dt2" pkg="eced3901_2021_team03" type="eced3901_dt2.py" launch-prefix="bash -c 'sleep $(arg node_delay_first); $0 $@' " output="screen""/>
+    <arg name = "x"/>
+	<node name="eced3901_dt2" pkg="eced3901_2021_team03" type="eced3901_dt2.py" args="$(arg x)" launch-prefix="bash -c 'sleep $(arg node_delay_first); $0 $@' " output="screen"/>
 	<node name="my_map" pkg="map_server" type="map_saver" args=" -f $(find eced3901_2021_team03)/maps/Design_Task2_map" launch-prefix="bash -c 'sleep $(arg node_delay_second); $0 $@' " output="screen"/>
 
 </launch>
