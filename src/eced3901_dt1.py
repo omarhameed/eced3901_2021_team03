@@ -12,7 +12,7 @@ This program was repurposed from the original program created by Gabriel Urbain 
 The original source code can be found here: https://gist.github.com/gurbain/c833e9858dd3e5fc4e30d6b1a305667b
 
 """
-
+#!/user/bin/python
 import math
 import rospy as ros
 import sys
@@ -51,7 +51,7 @@ class TriangleMove(object):
         self.odometry_sub = None  
 
         # ROS params
-      self.pub_rate = 0.1 #sets the rate the ROS publishes
+        self.pub_rate = 0.1 #sets the rate the ROS publishes
         self.queue_size = 2 #sets the ROS que size
 
         # Variables containing the sensor information that can be used in the main program
