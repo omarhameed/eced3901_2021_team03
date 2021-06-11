@@ -438,17 +438,18 @@ class TriangleMoveOdom(TriangleMove):
 if __name__ == '__main__':
 
     # Choose the example you need to run in the command line
-    if len(sys.argv) > 1:
+#     if len(sys.argv) > 1:
 
-        if sys.argv[1] == "odom":
-            r = TriangleMoveOdom()
+#         if sys.argv[1] == "odom":
+#             r = TriangleMoveOdom()
 
-        else:
-            sys.exit(-1)
+#         else:
+#             sys.exit(-1)
 
-    else:
-        sys.exit(-1)
+#     else:
+#         sys.exit(-1)
 
     # Listen and Publish to ROS + execute moving instruction
+    r = TriangleMoveOdom()
     r.start_ros()
     r.move()
