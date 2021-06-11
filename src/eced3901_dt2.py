@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Date: May 28, 2021
 Authors: Usman Kamran, Ryan Brownlee, Omar Abdel Hameed
