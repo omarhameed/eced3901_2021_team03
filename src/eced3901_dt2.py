@@ -107,21 +107,21 @@ class TriangleMoveOdom(TriangleMove):
 
     def __init__(self):
 
+ 
+        super(TriangleMoveOdom, self).__init__()  ##creates class that inherents from trianglemove
 
-        super(TriangleMoveOdom, self).__init__()
-
-        self.pub_rate = 0.1
+        self.pub_rate = 0.1 #sets publish rate
 
     def get_z_rotation(self, orientation): #converts input quaternion coordinates into eulerian roll pitch and yaw
 
-        (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w])
-        print (roll, pitch, yaw)
+        (roll, pitch, yaw) = euler_from_quaternion([orientation.x, orientation.y, orientation.z, orientation.w]) ##euler from quaternion converts into roll pitch and yaw from input
+        print (roll, pitch, yaw) ## prints newly converted coordinates
         return yaw
         
     def move_of(self, d, speed=0.1):
 
-        x_init = self.odom_pose.position.x
-        y_init = self.odom_pose.position.y
+        x_init = self.odom_pose.position.x ## sets x_init to current published position x
+        y_init = self.odom_pose.position.y ## sets y_init to current published position y
 
         print ("X_Init, Y_Init: ", x_init,y_init) #prints x_init and y_init, which is the x and y position
 
@@ -143,11 +143,11 @@ class TriangleMoveOdom(TriangleMove):
 
     # Convert any negative angles into their positive rad equivalents
     def convert_pose_estimate(self, pose):
-        if (pose < (math.pi)/2 and pose > 0):
+        if (pose < (math.pi)/2 and pose > 0):  ## if the coordinate is < 90 degress and greater then 0 it passes through unchanged
             return pose
-        elif (pose > (math.pi)/2):
+        elif (pose > (math.pi)/2):  ## if the coordinate is > 90 degrees it passes through unchanged
             return pose
-        elif (pose < 0):
+        elif (pose < 0): ## if the coordinate is < 0 it gets converted to its equivilent positive coordinate and that is pushed instead
             positivePose = pose + 2*(math.pi) 
             return positivePose
         
@@ -155,14 +155,14 @@ class TriangleMoveOdom(TriangleMove):
     def turn_of(self, a, ang_speed=0.2):
 
         # Convert the orientation quaternion message to Euler angles
-        a_init = self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation))
-        print (a_init)
+        a_init = self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation)) ## sets a_init to converted pose
+        print (a_init) ##prints converted pose
         print("This is our check for initial orientation: {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation)))
         
         # Set the angular velocity forward until angle is reached
-        while (abs(self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown():
-            sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \
-                a_init) + "rad over {:.2f}".format(a) + "rad")
+        while (abs(self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown(): ##while the pose is not the intended pose
+            sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \ 
+                a_init) + "rad over {:.2f}".format(a) + "rad")## prints the current pose and the intended pose
             
             sys.stdout.flush()
             print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
@@ -183,14 +183,14 @@ class TriangleMoveOdom(TriangleMove):
 
         # Implement main instructions
         # Counterclockwise square movement implementation.
+        self.move_of(1.1) #moves 1.1 units
+        self.turn_of((math.pi)/2) ## turn 90 degrees
         self.move_of(1.1)
         self.turn_of((math.pi)/2)
         self.move_of(1.1)
         self.turn_of((math.pi)/2)
         self.move_of(1.1)
-        self.turn_of((math.pi)/2)
-        self.move_of(1.1)
-        self.turn_of(math.pi)
+        self.turn_of(math.pi)  ##turn 180 degrees
         self.turn_of((math.pi)/2)
 
         """
