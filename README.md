@@ -9,6 +9,7 @@
 ## To run this program on the robot, perform the following steps:
 **In Terminal 1:**
 1. roscore
+
 **In Terminal 2:**
 1. roslaunch eced3901_2021_team03 eced3901_dt2.launch x:=odom
 
