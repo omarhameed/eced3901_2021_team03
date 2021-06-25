@@ -23,13 +23,55 @@ int main(int argc, char** argv){
     if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base moved 1 meter forward");
     else ROS_INFO("The base failed to move forward 1 meter for some reason");
 
+    move_base_msgs::MoveBaseGoal goal1;
     //turn 90 degrees ccw
-    goal.target_pose.header.frame_id = "base_link";
-    goal.target_pose.header.stamp = ros::Time::now();
-    goal.target_pose.pose.position.x = 0.0; 
-    goal.target_pose.pose.orientation.w = M_PI/2;
+    goal1.target_pose.header.frame_id = "base_link";
+    goal1.target_pose.header.stamp = ros::Time::now();
+    // goal1.target_pose.pose.position.x = 1.1; 
+    goal1.target_pose.pose.position.y = 1.1; 
+    goal1.target_pose.pose.orientation.w = 1;
     ROS_INFO("Sending goal"); 
-    ac.sendGoal(goal);
+    ac.sendGoal(goal1);
+    ac.waitForResult(); 
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    else ROS_INFO("The base failed to turn for some reason");
+
+
+    move_base_msgs::MoveBaseGoal goal2;
+    //turn 90 degrees ccw
+    goal2.target_pose.header.frame_id = "base_link";
+    goal2.target_pose.header.stamp = ros::Time::now();
+    goal2.target_pose.pose.position.x = -1.1; 
+    // goal1.target_pose.pose.position.y = 1.1; 
+    goal2.target_pose.pose.orientation.w = 1;
+    ROS_INFO("Sending goal"); 
+    ac.sendGoal(goal2);
+    ac.waitForResult(); 
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    else ROS_INFO("The base failed to turn for some reason");
+
+    move_base_msgs::MoveBaseGoal goal3;
+    //turn 90 degrees ccw
+    goal3.target_pose.header.frame_id = "base_link";
+    goal3.target_pose.header.stamp = ros::Time::now();
+    // goal1.target_pose.pose.position.x = -1.1; 
+    goal3.target_pose.pose.position.y = -1.1; 
+    goal3.target_pose.pose.orientation.w = 1;
+    ROS_INFO("Sending goal"); 
+    ac.sendGoal(goal3);
+    ac.waitForResult(); 
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    else ROS_INFO("The base failed to turn for some reason");
+
+    move_base_msgs::MoveBaseGoal goal4;
+    //turn 90 degrees ccw
+    goal4.target_pose.header.frame_id = "base_link";
+    goal4.target_pose.header.stamp = ros::Time::now();
+    goal4.target_pose.pose.position.x = 1.1; 
+    // goal1.target_pose.pose.position.y = -1.1; 
+    goal4.target_pose.pose.orientation.w = 1;
+    ROS_INFO("Sending goal"); 
+    ac.sendGoal(goal4);
     ac.waitForResult(); 
     if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
     else ROS_INFO("The base failed to turn for some reason");
