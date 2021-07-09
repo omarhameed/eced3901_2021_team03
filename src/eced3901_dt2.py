@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 Date: May 28, 2021
 Authors: Usman Kamran, Ryan Brownlee, Omar Abdel Hameed
@@ -161,8 +160,7 @@ class TriangleMoveOdom(TriangleMove):
         
         # Set the angular velocity forward until angle is reached
         while (abs(self.convert_pose_estimate(self.get_z_rotation(self.odom_pose.orientation)) - a_init)) < a and not ros.is_shutdown(): ##while the pose is not the intended pose
-            sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - \ 
-                a_init) + "rad over {:.2f}".format(a) + "rad")## prints the current pose and the intended pose
+            sys.stdout.write("\r [TURN] The robot has turned of {:.2f}".format(self.get_z_rotation(self.odom_pose.orientation) - a_init) + "rad over {:.2f}".format(a) + "rad")## prints the current pose and the intended pose
             
             sys.stdout.flush()
             print (self.get_z_rotation(self.odom_pose.orientation) - a_init)
