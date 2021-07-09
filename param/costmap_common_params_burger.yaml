@@ -1,4 +1,4 @@
-obstacle_range: 1.0
+obstacle_range: 0.75
 raytrace_range: 3.5
 
 #footprint: [[-0.11, -0.11], [-0.11, 0.11], [0.11, 0.11], [0.11, -0.11]]
