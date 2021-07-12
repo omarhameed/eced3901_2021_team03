@@ -28,6 +28,6 @@
           args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz"/>
   </group>
 
-  <node pkg="eced3901_2021_team03" type="eced3901_2021_team03" name="eced3901_2021_team03"/>
+  <node pkg="eced3901_2021_team03" type="eced3901_2021_team03" name="eced3901_2021_team03" output="screen"/>
   
 </launch>
