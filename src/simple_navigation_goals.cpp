@@ -2,6 +2,11 @@
 #include <move_base_msgs/MoveBaseAction.h> 
 #include <actionlib/client/simple_action_client.h>
 #include <math.h>
+#include <iostream>
+#include <unistd.h>
+#include <cstdlib>
+#include <fstream>
+
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 int main(int argc, char** argv){
     ros::init(argc, argv, "simple_navigation_goals");
@@ -28,7 +33,10 @@ int main(int argc, char** argv){
     // Block until the move_base node is finished processing goal 
     ac.waitForResult(); 
     // Checking if the goal is successful 
-    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base moved 1 meter forward");
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+        ROS_INFO("Hooray, the base moved 1 meter forward");
+        std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+    } 
     else ROS_INFO("The base failed to move forward 1 meter for some reason");
 
     move_base_msgs::MoveBaseGoal fire2;
@@ -38,10 +46,14 @@ int main(int argc, char** argv){
     fire2.target_pose.pose.position.x = 0.9; 
     fire2.target_pose.pose.position.y = 2.1; 
     fire2.target_pose.pose.orientation.w = 1;
-    ROS_INFO("Sending goal"); 
+    ROS_INFO("Sending goal");
+    std::system("rostopic pub /led_input std_msgs/Float64 '0' --once");  
     ac.sendGoal(fire2);
     ac.waitForResult(); 
-    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+        ROS_INFO("Hooray, the base moved 1 meter forward");
+        std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+    }
     else ROS_INFO("The base failed to turn for some reason");
 
 
@@ -53,9 +65,13 @@ int main(int argc, char** argv){
     fire3.target_pose.pose.position.y = 3.6; 
     fire3.target_pose.pose.orientation.w = 1;
     ROS_INFO("Sending goal"); 
+    std::system("rostopic pub /led_input std_msgs/Float64 '0' --once");  
     ac.sendGoal(fire3);
     ac.waitForResult(); 
-    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+        ROS_INFO("Hooray, the base moved 1 meter forward");
+        std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+    }
     else ROS_INFO("The base failed to turn for some reason");
 
     move_base_msgs::MoveBaseGoal fire4;
@@ -65,10 +81,14 @@ int main(int argc, char** argv){
     fire4.target_pose.pose.position.x =3.3; 
     fire4.target_pose.pose.position.y = 1.5; 
     fire4.target_pose.pose.orientation.w = 1;
-    ROS_INFO("Sending goal"); 
+    ROS_INFO("Sending goal");
+    std::system("rostopic pub /led_input std_msgs/Float64 '0' --once");  
     ac.sendGoal(fire4);
     ac.waitForResult(); 
-    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");
+    if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+        ROS_INFO("Hooray, the base moved 1 meter forward");
+        std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+    }
     else ROS_INFO("The base failed to turn for some reason");
 
     move_base_msgs::MoveBaseGoal exit;
@@ -79,6 +99,7 @@ int main(int argc, char** argv){
     exit.target_pose.pose.position.y = 0.3; 
     exit.target_pose.pose.orientation.w = 1;
     ROS_INFO("Sending goal"); 
+    std::system("rostopic pub /led_input std_msgs/Float64 '0' --once");  
     ac.sendGoal(exit);
     ac.waitForResult(); 
     if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) ROS_INFO("Hooray, the base turned.");

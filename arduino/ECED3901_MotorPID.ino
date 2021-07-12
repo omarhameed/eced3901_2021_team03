@@ -8,7 +8,7 @@ UPDATED by Usman Kamran (Group 3) with functional LED.
 To test:
 
 Turn OFF: rostopic pub /led_input std_msgs/Float64 "0" 
-Turn ON: rosopic pub /led_input std_msgs/Float64 "0" 
+Turn ON: rostopic pub /led_input std_msgs/Float64 "1" 
 View data: rostopic echo /led_listen
 */
 // DO NOT USE TIMER 0, used for delay and ROS functions
