@@ -49,28 +49,46 @@ int main(int argc, char** argv){
     std::cout << "Emergency! Your building is on fire! \n";
     std::cout << "Please enter the number of fires in the building. The last waypoint for the exit has been set for you! \n";
     std::cin >> num_fires;
-    std::cout << "Wow! Here are the number of fires in the building: " << num_fires;
+    std::cout << "Wow! Here are the number of fires in the building: \n" << num_fires;
     
     float fire_arr[num_fires][3];         // declaration of a new array
   
     while(count<num_fires){
         // float dimensions[3];
-        std::cout << "Enter the x value of the waypoint: \n";
-        std::cin >> x;
-        std::cout << "Enter the y value of the waypoint: \n";
-        std::cin >> y;
-        std::cout << "Enter the w value of the waypoint: \n";
-        std::cin >> w;
-        fire_arr[count][0] = x;
-        fire_arr[count][1] = y;
-        fire_arr[count][2] = w;
+        std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+        std::cin >> x >> y >> w;
+        if ((static_cast<float>(x) != x)||(static_cast<float>(y) != y)(static_cast<float>(w) != w) ){
+            cout << "Please enter a float/int value. Try again!\n";
+            std::cin.clear();
+            std::cin.ignore(256,'\n');   // ignore the line change
+            std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+            std::cin >> x >> y >> w;
+            }
+        else if(x>3.9624 || y>3.9624){
+            cout << "X or Y values are out of bounds! Try again!!\n";
+            std::cin.clear();
+            std::cin.ignore(256,'\n');   // ignore the line change
+            std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+            std::cin >> x >> y >> w;
+        }
+        else if(x=="" || y=="" ||w==""){
+            cout << "No user input! Try again!!\n";
+            std::cin.clear();
+            std::cin.ignore(256,'\n');   // ignore the line change
+            std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+            std::cin >> x >> y >> w;
+        }
+
+        fire_arr[0][count] = x;
+        fire_arr[1][count] = y;
+        fire_arr[2][count] = w;
         // fire_arr[count] = dimensions;
         count++;
     }
     ros::init(argc, argv, "simple_navigation_goals");
     int wp_count = 0;
     while(wp_count<num_fires){
-        set_waypoint(fire_arr[wp_count][0], fire_arr[wp_count][1], fire_arr[wp_count][2]);
+        set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count]);
         wp_count++;
     }
 

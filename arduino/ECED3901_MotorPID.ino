@@ -71,10 +71,10 @@ void messageCb( const geometry_msgs::Twist& msg)
 void messageLedCb( const std_msgs::Float64& toggle_msg){
   led_data = toggle_msg.data;
   if(led_data==1){
-    digitalWrite(13, HIGH);   // blink the led
+    digitalWrite(LED_BUILTIN, HIGH);   // blink the led
   }
   else if(led_data==0){
-    digitalWrite(13, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
   }
 }
 
@@ -142,7 +142,7 @@ void setup()
 {
         MCU_init();
         
-        pinMode(13,OUTPUT);
+        pinMode(LED_BUILTIN,OUTPUT);
         nh.initNode();
         nh.subscribe(sub);
 
