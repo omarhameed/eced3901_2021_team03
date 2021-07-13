@@ -14,7 +14,7 @@
 using namespace std;
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
-void set_waypoint(float x, float y, float w){
+void set_waypoint(float x, float y, float w, int exit){
     /*tell the action client that we want to spin a thread by default which is comunicated 
     through "move_base*/
     float foot = 0.3048;
@@ -51,7 +51,9 @@ void set_waypoint(float x, float y, float w){
     // Checking if the goal is successful 
     if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
         ROS_INFO("Hooray, the base moved 1 meter forward");
-        std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+        if (exit==0){
+            std::system("rostopic pub /led_input std_msgs/Float64 '1' --once");
+        }
     } 
     else ROS_INFO("The base failed to move forward 1 meter for some reason");
 
@@ -202,7 +204,7 @@ int main(int argc, char** argv){
     int wp_count = 0;
 
     do{
-        set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count]);
+        set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count], 0);
         wp_count++;
     }
     while(wp_count<total_fires);
@@ -210,8 +212,8 @@ int main(int argc, char** argv){
 
     // set_waypoint(1.4048,0.3048,1.0);
     // set_waypoint(1.4048,1.4048,1.0);
-    set_waypoint(0.3048,0.3048,0.0);
-    // set_waypoint(3.9,0.3,0);
+    // set_waypoint(0.3048,0.3048,0.0, 1);
+    set_waypoint(3.9,0.3,0,1);
 
     //3.9 0.3 1 is the exit
     
