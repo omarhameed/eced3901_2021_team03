@@ -51,6 +51,14 @@ bool is_digits(const std::string &str) {
     return str.find_first_not_of("0123456789") == std::string::npos;
 }
 
+bool is_float( string myString ) {
+    std::istringstream iss(myString);
+    float f;
+    iss >> noskipws >> f; // noskipws considers leading whitespace invalid
+    // Check the entire string was consumed and if either failbit or badbit is set
+    return iss.eof() && !iss.fail(); 
+}
+
 int num_fires_func(){
     int num_fires, error;
 
@@ -95,46 +103,56 @@ int main(int argc, char** argv){
     int count=0;
     int again = 0;
     char confirm;
-    int x, y, w;
+    int x, y, w, error;
     char c;
+    std::string str_x, str_y, str_w;
 
     int total_fires=num_fires_func();
-    std::cout<< "Checking total fires "<<total_fires<<endl;
+
     // float fire_arr[num_fires][3];         // declaration of a new array
-  
-    // while(count<num_fires){
-    //     // float dimensions[3];
-    //     std::cout << "Enter the x, y, and w value of waypoint "<<count+1<< "here with a space between each value: ";
-    //     std::cin >> x >> y >> w;
-    //     if ((static_cast<float>(x) != x)||(static_cast<float>(y) != y)||(static_cast<float>(w) != w)){
-    //         cout << "Please enter a float/int value. Try again!\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(256,'\n');   // ignore the line change
-    //         std::cout << "Enter the x, y, and w value of the waypoint here: \n";
-    //         std::cin >> x >> y >> w;
-    //         }
-    //     else if(x>3.9624 || y>3.9624){
-    //         cout << "X or Y values are out of bounds! Try again!!\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(256,'\n');   // ignore the line change
-    //         std::cout << "Enter the x, y, and w value of the waypoint here: \n";
-    //         std::cin >> x >> y >> w;
-    //     }
-    //     else if(std::cin.get() == '\n'){
-    //         cout << "No user input! Try again!!\n";
-    //         std::cin.clear();
-    //         std::cin.ignore(256,'\n');   // ignore the line change
-    //         std::cout << "Enter the x, y, and w value of the waypoint here: \n";
-    //         std::cin >> x >> y >> w;
-    //     }
-    //     else{
-    //         fire_arr[0][count] = x;
-    //         fire_arr[1][count] = y;
-    //         fire_arr[2][count] = w;
-    //     }
-    //     // fire_arr[count] = dimensions;
-    //     count++;
-    // }
+    
+    do{
+        // float dimensions[3];
+        std::cout << "Enter the x value of waypoint "<<count+1<<endl;
+        std::getline(cin,str_x);
+        if(!is_float(str_x))
+        {
+            std::cout << "Invalid entry! Please try again!"<<endl;
+            error=1;
+            // cin.clear();
+            // cin.ignore(80, '\n');
+            }
+        // std::cin >> x >> y >> w;
+        // if ((static_cast<float>(x) != x)||(static_cast<float>(y) != y)||(static_cast<float>(w) != w)){
+        //     cout << "Please enter a float/int value. Try again!\n";
+        //     std::cin.clear();
+        //     std::cin.ignore(256,'\n');   // ignore the line change
+        //     std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+        //     std::cin >> x >> y >> w;
+        //     }
+        // else if(x>3.9624 || y>3.9624){
+        //     cout << "X or Y values are out of bounds! Try again!!\n";
+        //     std::cin.clear();
+        //     std::cin.ignore(256,'\n');   // ignore the line change
+        //     std::cout << "Enter the x, y, and w value of the waypoint here: \n";
+        //     std::cin >> x >> y >> w;
+        // }
+        else if(std::cin.get() == '\n'){
+            cout << "No user input! Try again!!\n";
+            error=1;
+            
+        }
+        // else{
+        //     fire_arr[0][count] = x;
+        //     fire_arr[1][count] = y;
+        //     fire_arr[2][count] = w;
+        // }
+        // fire_arr[count] = dimensions;
+        count++;
+        
+    }
+    while(count<total_fires || error!=0);
+
     ros::init(argc, argv, "simple_navigation_goals");
     // int wp_count = 0;
     // while(wp_count<num_fires){
