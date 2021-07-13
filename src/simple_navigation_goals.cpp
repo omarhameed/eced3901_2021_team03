@@ -103,55 +103,52 @@ int main(int argc, char** argv){
     int count=0;
     int again = 0;
     char confirm;
-    int x, y, w, error;
+    int  error;
+    float x, y, w;
     char c;
     std::string str_x, str_y, str_w;
 
     int total_fires=num_fires_func();
 
-    // float fire_arr[num_fires][3];         // declaration of a new array
+    float fire_arr[total_fires][3];         // declaration of a new array
     
     do{
         // float dimensions[3];
-        std::cout << "Enter the x value of waypoint "<<count+1<<endl;
-        std::getline(cin,str_x);
-        if(!is_float(str_x))
-        {
-            std::cout << "Invalid entry! Please try again!"<<endl;
-            error=1;
-            // cin.clear();
-            // cin.ignore(80, '\n');
+        do{
+            std::cout << "Enter the x value of waypoint "<<count+1<<endl;
+            std::getline(cin,str_x);
+            if(!is_float(str_x))
+            {
+                std::cout << "Invalid entry! Please try again!"<<endl;
+                error=1;
+                // cin.clear();
+                // cin.ignore(80, '\n');
+                }
+            else if(str_x == ""){
+                error=1;            
             }
-        // std::cin >> x >> y >> w;
-        // if ((static_cast<float>(x) != x)||(static_cast<float>(y) != y)||(static_cast<float>(w) != w)){
-        //     cout << "Please enter a float/int value. Try again!\n";
-        //     std::cin.clear();
-        //     std::cin.ignore(256,'\n');   // ignore the line change
-        //     std::cout << "Enter the x, y, and w value of the waypoint here: \n";
-        //     std::cin >> x >> y >> w;
-        //     }
-        // else if(x>3.9624 || y>3.9624){
-        //     cout << "X or Y values are out of bounds! Try again!!\n";
-        //     std::cin.clear();
-        //     std::cin.ignore(256,'\n');   // ignore the line change
-        //     std::cout << "Enter the x, y, and w value of the waypoint here: \n";
-        //     std::cin >> x >> y >> w;
-        // }
-        else if(std::cin.get() == '\n'){
-            cout << "No user input! Try again!!\n";
-            error=1;
-            
-        }
-        // else{
-        //     fire_arr[0][count] = x;
+            else{
+                x = std::stof (str_x);
+                if (x<0||x>3.9624){
+                    cout<<"Out of bounds. Please try again!";
+                    error=1;
+                }
+                else{
+                    fire_arr[0][count] = x;
+                    error=0;
+                }
+
+            }
+
         //     fire_arr[1][count] = y;
         //     fire_arr[2][count] = w;
         // }
         // fire_arr[count] = dimensions;
+        }while (error!=0);
+        std::cout<<"Sanity check for array:"<<fire_arr[0][count]<<endl;
         count++;
-        
     }
-    while(count<total_fires || error!=0);
+    while(count<total_fires);
 
     ros::init(argc, argv, "simple_navigation_goals");
     // int wp_count = 0;
