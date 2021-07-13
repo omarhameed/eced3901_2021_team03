@@ -7,6 +7,9 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <fstream>
+#include <limits>
+#include <string>
+#include <sstream>
 using namespace std;
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
@@ -44,14 +47,59 @@ void set_waypoint(float x, float y, float w){
 
 }
 
-int main(int argc, char** argv){
-    int num_fires, x, y, w;
-    // int count=0;
-    // std::cout << "Emergency! Your building is on fire! \n";
-    // std::cout << "Please enter the number of fires in the building. The last waypoint for the exit has been set for you! \n";
-    // std::cin >> num_fires;
-    // std::cout << "Wow! Here are the number of fires in the building: \n" << num_fires;
+bool is_digits(const std::string &str) {
+    return str.find_first_not_of("0123456789") == std::string::npos;
+}
+
+int num_fires_func(){
+    int num_fires, error;
+
+    std::string str_fires;
+    std::cout << "Emergency! Your building is on fire!"<<endl;
     
+    do{
+        error=0;
+        std::cout << "Please enter the number of fires in the building. The last waypoint for the exit has been set for you!"<<endl;
+        // std::cin >> num_fires;
+        std::getline(cin,str_fires);
+        
+        if(!is_digits(str_fires))
+        {
+            std::cout << "Invalid entry! Please try again!"<<endl;
+            error=1;
+            // cin.clear();
+            // cin.ignore(80, '\n');
+            }
+        else if(str_fires==""){
+            error=1;
+        }
+        else{
+            num_fires=stoi(str_fires);
+
+            if(num_fires==0){
+                std::cout << "There are 0 fires in the building. Please try again!"<<endl;
+                error=1;
+            }
+            else{
+                std::cout << "There are "<<num_fires<<" fires in the building!"<<endl;
+                error=0;
+            }
+            
+        }    
+    }while(error==1);
+
+    return num_fires;   
+}
+int main(int argc, char** argv){
+
+    int count=0;
+    int again = 0;
+    char confirm;
+    int x, y, w;
+    char c;
+
+    int total_fires=num_fires_func();
+    std::cout<< "Checking total fires "<<total_fires<<endl;
     // float fire_arr[num_fires][3];         // declaration of a new array
   
     // while(count<num_fires){
@@ -94,10 +142,10 @@ int main(int argc, char** argv){
     //     wp_count++;
     // }
 
-    set_waypoint(1.4048,0.3048,1.0);
-    set_waypoint(1.4048,1.4048,1.0);
-    set_waypoint(0.3048,1.4048,1.0);
-    set_waypoint(0.3048,0.3048,1.0);
+    // set_waypoint(1.4048,0.3048,1.0);
+    // set_waypoint(1.4048,1.4048,1.0);
+    // set_waypoint(0.3048,1.4048,1.0);
+    // set_waypoint(0.3048,0.3048,1.0);
 
     //3.9 0.3 1 is the exit
     
