@@ -61,7 +61,6 @@ bool is_float( string myString ) {
 
 int num_fires_func(){
     int num_fires, error;
-
     std::string str_fires;
     std::cout << "Emergency! Your building is on fire!"<<endl;
     
@@ -98,6 +97,65 @@ int num_fires_func(){
 
     return num_fires;   
 }
+
+float xy_float(const char* val, int firenum){
+    std::string str_xy;
+    int error;
+    float xy;
+
+    do{
+        std::cout << "Enter the "<< val <<" value of waypoint "<<firenum<<endl;
+        std::getline(cin,str_xy);
+        if(!is_float(str_xy))
+        {
+            std::cout << "Invalid entry! Please try again!"<<endl;
+            error=1;
+            // cin.clear();
+            // cin.ignore(80, '\n');
+            }
+        else if(str_xy == ""){
+            error=1;            
+        }
+        else{
+            xy = std::stof (str_xy);
+            if (xy<0||xy>3.9624){
+                cout<<"Out of bounds. Please try again!"<<endl;
+                error=1;
+            }
+            else{
+                error=0;
+            }
+
+        }
+    }while (error!=0);
+    return xy;
+}
+
+float w_float(const char* val, int firenum){
+    std::string str_w;
+    int error;
+    float w;
+    do{
+        std::cout << "Enter the "<< val <<" value of waypoint "<<firenum<<endl;
+        std::getline(cin,str_w);
+        if(!is_float(str_w))
+        {
+            std::cout << "Invalid entry! Please try again!"<<endl;
+            error=1;
+            // cin.clear();
+            // cin.ignore(80, '\n');
+            }
+        else if(str_w == ""){
+            error=1;            
+        }
+        else{
+            w = std::stof (str_w);
+            error=0;
+            }
+    }while (error!=0);
+    return w;
+}
+
 int main(int argc, char** argv){
 
     int count=0;
@@ -114,38 +172,18 @@ int main(int argc, char** argv){
     
     do{
         // float dimensions[3];
-        do{
-            std::cout << "Enter the x value of waypoint "<<count+1<<endl;
-            std::getline(cin,str_x);
-            if(!is_float(str_x))
-            {
-                std::cout << "Invalid entry! Please try again!"<<endl;
-                error=1;
-                // cin.clear();
-                // cin.ignore(80, '\n');
-                }
-            else if(str_x == ""){
-                error=1;            
-            }
-            else{
-                x = std::stof (str_x);
-                if (x<0||x>3.9624){
-                    cout<<"Out of bounds. Please try again!";
-                    error=1;
-                }
-                else{
-                    fire_arr[0][count] = x;
-                    error=0;
-                }
+        x = xy_float("x", count+1);
+        y = xy_float("y", count+1);
+        w = w_float("w", count+1);
+        fire_arr[0][count] = x;
+        fire_arr[1][count] = y;
+        fire_arr[2][count] = w;
 
-            }
 
-        //     fire_arr[1][count] = y;
-        //     fire_arr[2][count] = w;
-        // }
-        // fire_arr[count] = dimensions;
-        }while (error!=0);
-        std::cout<<"Sanity check for array:"<<fire_arr[0][count]<<endl;
+        std::cout<<"Sanity check for x in fire "<<count+1<<":"<<fire_arr[0][count]<<endl;
+        std::cout<<"Sanity check for y in fire "<<count+1<<":"<<fire_arr[1][count]<<endl;
+        std::cout<<"Sanity check for w in fire "<<count+1<<":"<<fire_arr[2][count]<<endl;
+
         count++;
     }
     while(count<total_fires);
