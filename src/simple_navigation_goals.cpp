@@ -2,6 +2,7 @@
 #include <ros/ros.h>
 #include <move_base_msgs/MoveBaseAction.h> 
 #include <actionlib/client/simple_action_client.h>
+#include <tf2/LinearMath/Quaternion.h>
 #include <math.h>
 #include <iostream>
 #include <unistd.h>
@@ -28,9 +29,18 @@ void set_waypoint(float x, float y, float w){
     fire1.target_pose.header.stamp = ros::Time::now();
     /*Making the base move 1 meter forward in x-dirction and 0 in the y-dirction 
     from the orgin (0.3048) in the "map" coordinate frame.*/
+
+    tf2::Quaternion myQuaternion;
+
+    myQuaternion.setRPY(0, 0, w);
+
     fire1.target_pose.pose.position.x = x; 
-    fire1.target_pose.pose.position.y = y; 
-    fire1.target_pose.pose.orientation.w = w;
+    fire1.target_pose.pose.position.y = y;
+    fire1.target_pose.pose.orientation.x = myQuaternion.getX();
+    fire1.target_pose.pose.orientation.y = myQuaternion.getY();
+    fire1.target_pose.pose.orientation.z = myQuaternion.getZ();
+    fire1.target_pose.pose.orientation.w = myQuaternion.getW();
+    // fire1.target_pose.pose.orientation.w = w;
     ROS_INFO("Sending goal"); 
     std::system("rostopic pub /led_input std_msgs/Float64 '0' --once");  
 
@@ -189,16 +199,19 @@ int main(int argc, char** argv){
     while(count<total_fires);
 
     ros::init(argc, argv, "simple_navigation_goals");
-    // int wp_count = 0;
-    // while(wp_count<num_fires){
-    //     set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count]);
-    //     wp_count++;
-    // }
+    int wp_count = 0;
+
+    do{
+        set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count]);
+        wp_count++;
+    }
+    while(wp_count<total_fires);
+            
 
     // set_waypoint(1.4048,0.3048,1.0);
     // set_waypoint(1.4048,1.4048,1.0);
-    // set_waypoint(0.3048,1.4048,1.0);
-    // set_waypoint(0.3048,0.3048,1.0);
+    set_waypoint(0.3048,0.3048,0.0);
+    // set_waypoint(3.9,0.3,0);
 
     //3.9 0.3 1 is the exit
     
