@@ -212,8 +212,8 @@ int main(int argc, char** argv){
 
     // set_waypoint(1.4048,0.3048,1.0);
     // set_waypoint(1.4048,1.4048,1.0);
-    set_waypoint(0.3048,0.3048,0.0, 1);
-    // set_waypoint(3.9,0.3,0,1);
+    // set_waypoint(0.3048,0.3048,0.0, 1);
+    set_waypoint(3.9,0.3,0,1);
 
     //3.9 0.3 1 is the exit
     
