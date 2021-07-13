@@ -187,14 +187,14 @@ int main(int argc, char** argv){
         x = xy_float("x", count+1);
         y = xy_float("y", count+1);
         w = w_float("w", count+1);
-        fire_arr[0][count] = x;
-        fire_arr[1][count] = y;
-        fire_arr[2][count] = w;
+        fire_arr[count][0] = x;
+        fire_arr[count][1] = y;
+        fire_arr[count][2] = w;
 
 
-        std::cout<<"Sanity check for x in fire "<<count+1<<":"<<fire_arr[0][count]<<endl;
-        std::cout<<"Sanity check for y in fire "<<count+1<<":"<<fire_arr[1][count]<<endl;
-        std::cout<<"Sanity check for w in fire "<<count+1<<":"<<fire_arr[2][count]<<endl;
+        std::cout<<"Sanity check for x in fire "<<count+1<<":"<<fire_arr[count][0]<<endl;
+        std::cout<<"Sanity check for y in fire "<<count+1<<":"<<fire_arr[count][1]<<endl;
+        std::cout<<"Sanity check for w in fire "<<count+1<<":"<<fire_arr[count][2]<<endl;
 
         count++;
     }
@@ -204,7 +204,7 @@ int main(int argc, char** argv){
     int wp_count = 0;
 
     do{
-        set_waypoint(fire_arr[0][wp_count], fire_arr[1][wp_count], fire_arr[2][wp_count], 0);
+        set_waypoint(fire_arr[wp_count][0], fire_arr[wp_count][1], fire_arr[wp_count][2], 0);
         wp_count++;
     }
     while(wp_count<total_fires);
@@ -212,8 +212,8 @@ int main(int argc, char** argv){
 
     // set_waypoint(1.4048,0.3048,1.0);
     // set_waypoint(1.4048,1.4048,1.0);
-    // set_waypoint(0.3048,0.3048,0.0, 1);
-    set_waypoint(3.9,0.3,0,1);
+    set_waypoint(0.3048,0.3048,0.0, 1);
+    // set_waypoint(3.9,0.3,0,1);
 
     //3.9 0.3 1 is the exit
     
