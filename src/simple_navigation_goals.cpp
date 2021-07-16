@@ -17,7 +17,6 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseCl
 void set_waypoint(float x, float y, float w, int exit){
     /*tell the action client that we want to spin a thread by default which is comunicated 
     through "move_base*/
-    float foot = 0.3048;
     MoveBaseClient ac("move_base", true);
     //wait for the action server to come up and is ready to begin processing goals
     while(!ac.waitForServer(ros::Duration(5.0))){
@@ -170,50 +169,56 @@ float w_float(const char* val, int firenum){
 
 int main(int argc, char** argv){
 
-    int count=0;
-    int again = 0;
-    char confirm;
-    int  error;
-    float x, y, w;
-    char c;
-    std::string str_x, str_y, str_w;
+    // int count=0;
+    // int again = 0;
+    // char confirm;
+    // int  error;
+    // float x, y, w;
+    // char c;
+    // std::string str_x, str_y, str_w;
 
-    int total_fires=num_fires_func();
+    // int total_fires=num_fires_func();
 
-    float fire_arr[total_fires][3];         // declaration of a new array
+    // float fire_arr[total_fires][3];         // declaration of a new array
     
-    do{
-        // float dimensions[3];
-        x = xy_float("x", count+1);
-        y = xy_float("y", count+1);
-        w = w_float("w", count+1);
-        fire_arr[count][0] = x;
-        fire_arr[count][1] = y;
-        fire_arr[count][2] = w;
+    // do{
+    //     // float dimensions[3];
+    //     x = xy_float("x", count+1);
+    //     y = xy_float("y", count+1);
+    //     w = w_float("w", count+1);
+    //     fire_arr[count][0] = x;
+    //     fire_arr[count][1] = y;
+    //     fire_arr[count][2] = w;
 
 
-        std::cout<<"Sanity check for x in fire "<<count+1<<":"<<fire_arr[count][0]<<endl;
-        std::cout<<"Sanity check for y in fire "<<count+1<<":"<<fire_arr[count][1]<<endl;
-        std::cout<<"Sanity check for w in fire "<<count+1<<":"<<fire_arr[count][2]<<endl;
+    //     std::cout<<"Sanity check for x in fire "<<count+1<<":"<<fire_arr[count][0]<<endl;
+    //     std::cout<<"Sanity check for y in fire "<<count+1<<":"<<fire_arr[count][1]<<endl;
+    //     std::cout<<"Sanity check for w in fire "<<count+1<<":"<<fire_arr[count][2]<<endl;
 
-        count++;
-    }
-    while(count<total_fires);
+    //     count++;
+    // }
+    // while(count<total_fires);
 
     ros::init(argc, argv, "simple_navigation_goals");
-    int wp_count = 0;
+    // int wp_count = 0;
 
-    do{
-        set_waypoint(fire_arr[wp_count][0], fire_arr[wp_count][1], fire_arr[wp_count][2], 0);
-        wp_count++;
-    }
-    while(wp_count<total_fires);
+    // do{
+    //     set_waypoint(fire_arr[wp_count][0], fire_arr[wp_count][1], fire_arr[wp_count][2], 0);
+    //     wp_count++;
+    // }
+    // while(wp_count<total_fires);
             
 
     // set_waypoint(1.4048,0.3048,1.0);
     // set_waypoint(1.4048,1.4048,1.0);
     // set_waypoint(0.3048,0.3048,0.0, 1);
+    
+    set_waypoint(2.7,0.3,0,0);
+    set_waypoint(0.9,2.1,1.57,0);
+    set_waypoint(3.3,3.6,0,0);
+    set_waypoint(3.3,1.5,-1.57,0);
     set_waypoint(3.9,0.3,0,1);
+
 
     //3.9 0.3 1 is the exit
     
